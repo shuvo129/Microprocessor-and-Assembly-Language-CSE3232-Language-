@@ -1,0 +1,38 @@
+;write an assembly language program that take an input string and make reverse string 
+.MODEL SMALL
+.STACK 100H 
+
+.DATA 
+STRING DB 'I LOVE BANGLADESH'     ;variable name 'string'       
+
+
+.CODE
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX          ;data segment accesing the AX value
+    
+ LEA SI, STRING    
+;MOV SI,OFFSET STRING     ;SI source index register that used to point to memory locations of 'string'
+    
+    MOV CX,18       ;CX counter register that serves as a loop counter of 'string'
+    
+    LOOP1:
+    MOV BX,[SI]
+    PUSH BX       ;pusing stack
+    INC SI        ;increment the source index register
+    LOOP LOOP1    ; end loop
+    
+    
+    
+    MOV CX,18
+    
+    LOOP2:
+    POP DX        ;pop stack value
+    MOV AH,02H    ;prepare for output
+    INT 21H       ;interrupt for output
+    LOOP LOOP2    ; end loop
+        
+         
+MAIN ENDP          ;end main procedure
+END MAIN           ;function end

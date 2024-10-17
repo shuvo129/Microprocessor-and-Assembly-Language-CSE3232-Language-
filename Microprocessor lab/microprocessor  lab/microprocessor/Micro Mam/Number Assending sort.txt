@@ -1,0 +1,128 @@
+include 'emu8086.inc'
+
+.model small
+.data
+
+  arr db 10 dup(?)
+  
+.code
+main proc 
+    mov ax, @data
+    mov ds, ax
+    
+    print "Enter random single decimel digit (0 to 9): "
+    
+    mov cx, 10
+    mov bx, offset arr
+    mov ah, 1
+    
+    inputs:
+    int 21h
+    mov [bx], al 
+    
+    
+    
+    
+    
+    inc bx
+    Loop inputs
+    
+    
+    
+    mov cx, 10
+    dec cx
+    
+    outerloop:
+    mov bx, cx
+    mov si, 0
+    
+    comploop:
+    mov al, arr[si] 
+    
+    
+    ;if wrong input
+    cmp al, 48
+    jl l1 
+    cmp al, 57
+    jg l1 
+   
+    
+    
+    mov dl, arr[si+1]
+    cmp al, dl
+    
+    jc noswap
+    
+    mov arr[si], dl
+    mov arr[si+1],al
+    
+    noswap:
+    inc si
+    dec bx
+    jnz comploop
+    
+    loop outerloop  
+    
+    
+    ;new line
+    mov ah, 2
+    mov dl, 10
+    int 21h
+    
+    mov dl, 13
+    int 21h
+    
+    
+    
+    
+    
+    print "After sorting in assending order: "
+    
+    mov cx, 10
+    mov bx, offset arr
+    
+    ;this loop to dysplay elements on the screen
+    
+    outputs: 
+    
+    mov dl, [bx]
+    mov ah, 2
+    int 21h
+    
+    mov dl, 32
+    mov ah,2
+    int 21h
+    
+    inc bx
+    loop outputs  
+    jmp exit
+    
+    
+    
+    l1: 
+    mov ah, 2
+    mov dl, 10
+    int 21h
+    
+    mov dl, 13
+    int 21h
+        
+    print "### Wrong input combination." 
+    print "Please reload the program and give correct input combination."
+           
+    exit:
+    MOV AH,4CH
+    INT 21H               ;DOS exit
+   
+    
+main endp
+
+
+
+
+
+
+
+
+
+      

@@ -1,0 +1,65 @@
+;TITLE_ADDITION one digit output 2 digit  9+9=18
+.MODEL SMALL 
+.STACK 100H 
+.DATA 
+    MSG1 DB 0AH, 0DH, "ENTER FIRST DIGIT: $" 
+    MSG2 DB 0AH, 0DH, "ENTER SECOND DIGIT: $" 
+    RESULT DB 0AH, 0DH, "RESULT IS $"  
+    
+    A DB 0
+    B DB 0 
+    
+    
+.CODE 
+    MAIN PROC
+        
+        MOV AX, @DATA ;DATA SEGMENT
+        MOV DS, AX
+        
+        MOV AH, 9
+        LEA DX, MSG1
+        INT 21H
+        
+        MOV AH, 1   ;A INPUT
+        INT 21H
+        MOV A, AL 
+        
+        MOV AH, 9
+        LEA DX, MSG2
+        INT 21H
+        
+        MOV AH, 1   ;B INPUT
+        INT 21H
+        MOV B, AL    
+        
+        ADD AL, A   ; AX= AL+AH
+        MOV AH, 0
+        AAA
+        
+        ADD AL, 48
+        ADD AH, 48
+        
+        MOV BX, AX  ;SORTING VALUE OF AX to BX
+        
+        MOV AH, 9
+        LEA DX, RESULT
+        INT 21H
+        
+        MOV AH, 2
+        MOV DL, BH
+        INT 21H
+        
+        MOV AH, 2
+        MOV DL, Bl
+        INT 21H
+        
+        MOV AH, 4CH
+        INT 21H
+        
+       MAIN ENDP 
+       
+       
+    END MAIN     
+         
+         
+; CODE ENDS

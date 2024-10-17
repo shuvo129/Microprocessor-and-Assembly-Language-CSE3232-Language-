@@ -1,0 +1,113 @@
+; FIND THE LONGEST SEQUENCE OF ALPHABETIC UPPERCASE CHARECTER
+include 'emu8086.inc'
+org 100h
+.model small
+
+
+
+.data
+arr db 20 dup(?)
+MSG DB 'ENTER TWENTY VALUED STRING: ',0DH,0AH,'$'
+MSG1 DB 'AFTER SORTING ARRAY: ',0DH,0AH,'$' 
+             
+             
+             
+.code
+main proc 
+    mov ax, @data
+    mov ds, ax
+    
+   
+    print "ENTER TWENTY VALUED STRING: "
+   ; MOV AH,9              ; display string function
+	;LEA DX, MSG
+	;INT 21H
+   
+   
+    
+    mov cx, 20
+    mov bx, offset arr
+    mov ah, 1
+    
+    inputs:
+    
+    int 21h
+    
+    mov [bx], al
+    inc bx
+    Loop inputs
+    
+    mov cx, 20
+    dec cx 
+    
+   
+   
+    outerloop:
+    mov bx, cx
+    mov si, 0   
+    
+ 
+    
+    comploop:
+    mov al, arr[si]
+    mov dl, arr[si+1]
+    cmp al, dl
+    
+    jc noswap
+    
+    mov arr[si], dl
+    mov arr[si+1],al
+    
+    noswap:
+    inc si
+    dec bx
+    jnz comploop
+    
+    loop outerloop
+    
+    
+    
+    ;new line  
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21H
+    MOV DL,0AH
+    INT 21H
+    
+   ; mov ah, 2
+    ;mov dl, 20
+    ;int 21h
+    
+   ; mov dl, 13
+   ; int 21h
+    
+    print "After sorting array: "
+     ;MOV AH,9              ; display string function
+	;LEA DX, MSG1
+	;INT 21H
+    
+    mov cx, 20
+    ;mov bx, offset arr 
+    LEA BX, ARR
+    
+    ;this loop to dysplay elements on the screen
+    
+    outputs:
+    mov dl, [bx]
+    mov ah, 2
+    int 21h
+    
+    mov dl, 32
+    mov ah,2
+    int 21h
+    
+    inc bx
+    loop outputs
+    
+   
+    
+main endp
+
+ret
+      
